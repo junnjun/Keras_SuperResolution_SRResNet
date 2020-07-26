@@ -1,4 +1,6 @@
 from __future__ import print_function
+
+import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 import os
@@ -144,17 +146,18 @@ def rgb2gray(rgb):
 
 
 def save_result(save_path, npyfile, test_generator):
+    """save file with corresponding filename"""
     for i,item in enumerate(npyfile):
         item = item / 255.0 # Back to range [0,1] from [0, 255]
         img = rgb2gray(item)
-        #filepath = test_generator.filenames[i] # image/PXXX_etc.png
-        #name = filepath.split(os.sep)[1].split('.')
-        #plt.imsave(os.path.join(save_path,"%s.png".format(name[0])), img, cmap=plt.get_cmap('gray'))d
+        filepath = test_generator.filenames[i] # image/PXXX_etc.png
+        name = os.path.split(filepath)[-1]
+        plt.imsave(os.path.join(save_path,name), img, cmap=plt.get_cmap('gray'))
 
-        plt.imsave(os.path.join(save_path,"test_{}.png".format(i)), img, cmap=plt.get_cmap('gray'))
 
 def psnr(y_true,y_pred):
     return tf.image.psnr(y_true,y_pred,1.0)
+
 
 def ssim(y_true, y_pred):
     return tf.image.ssim(y_true,y_pred,1.0)
