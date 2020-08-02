@@ -25,13 +25,15 @@ def res_block(input):
 
 # (1) Efficient sub-pixel convolution(pixelshuffler) Conv -> Pixelshuffle -> PReLU
 def up_block1(input, batch_size, upscale):
-    x = Conv2D(filters=256*(upscale**2), kernel_size=(3, 3), strides=(1, 1), padding='same')(input)
+    x = Conv2D(filters=256, kernel_size=(3, 3), strides=(1, 1), padding='same')(input)
+    # x = Conv2D(filters=256*(upscale**2), kernel_size=(3, 3), strides=(1, 1), padding='same')(input)
     x = pixelshuffler(input_shape=(88,88,3), batch_size=batch_size, scale=upscale)(x)
     x = PReLU(shared_axes=[1, 2])(x)
     return x
 
 def up_block2(input, batch_size, upscale):
-    x = Conv2D(filters=256*(upscale**2), kernel_size=(3, 3), strides=(1, 1), padding='same')(input)
+    x = Conv2D(filters=256, kernel_size=(3, 3), strides=(1, 1), padding='same')(input)
+    # x = Conv2D(filters=256*(upscale**2), kernel_size=(3, 3), strides=(1, 1), padding='same')(input)
     x = pixelshuffler(input_shape=(176,176,3), batch_size=batch_size, scale=upscale)(x)
     x = PReLU(shared_axes=[1, 2])(x)
     return x
