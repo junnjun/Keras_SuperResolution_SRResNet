@@ -1,6 +1,8 @@
 import argparse
 from math import ceil
 
+from keras.callbacks import ModelCheckpoint, TensorBoard, ProgbarLogger
+
 from network import *
 from data_utility import *
 from perceptual_loss import *
@@ -93,7 +95,7 @@ if __name__ == '__main__':
 
 
     # load model
-    input, output = generator(input_size=lr_image_size)
+    input, output = generator(batch_size=batch_size, input_size=lr_image_size, upscale=upscale_factor, mode=mode)
     generator = Model(input, output)
     generator.summary()
 

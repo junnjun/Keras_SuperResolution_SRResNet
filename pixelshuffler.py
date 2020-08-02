@@ -20,7 +20,7 @@ def pixelshuffler(input_shape, batch_size, scale=2):
     (from H * W * C * r^2 to rH * rW * C)
     """
 
-    def subpixel_shape(input_shape, batch_size):
+    def subpixel_shape(input_shape=input_shape, batch_size=batch_size):
 
         dim = [batch_size,
                input_shape[1] * scale,

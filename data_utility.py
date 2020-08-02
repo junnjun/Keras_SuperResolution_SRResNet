@@ -134,16 +134,15 @@ def testGenerator(sample_size, test_path, imagelow_folder, lr_target_size=(88, 8
         class_mode=None)
 
     # return test_generator
-    for img in test_generator:
-         #img = img/255
-         #img = img/127.5 - 1
-         img = img
-         yield img
+    return test_generator
 
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
+def yield_generator(test_generator):
+    for img in test_generator:
+        yield img
 
 def save_result(save_path, npyfile, test_generator):
     """save file with corresponding filename"""

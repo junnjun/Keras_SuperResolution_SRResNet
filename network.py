@@ -55,8 +55,8 @@ def generator(batch_size, input_size=(88,88,3), upscale=4, mode='PS'):
     x = BatchNormalization(momentum=0.8)(x)
     x = add([x, x_init])
     if mode == 'PS':
-        x = up_block1(x, batch_size=batch_size, upscale=upscale*0.5)
-        x = up_block2(x, batch_size=batch_size, upscale=upscale*0.5)
+        x = up_block1(x, batch_size=batch_size, upscale=int(upscale*0.5))
+        x = up_block2(x, batch_size=batch_size, upscale=int(upscale*0.5))
     elif mode == 'NN':
         x = up_block(x, upscale=upscale*0.5)
         x = up_block(x, upscale=upscale*0.5)

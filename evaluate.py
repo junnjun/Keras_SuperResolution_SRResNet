@@ -1,35 +1,35 @@
 import argparse
-import os
-from math import ceil
 
 from network import *
 from data_utility import *
-from perceptual_loss import *
 
 from keras.models import Model
-from keras.layers import Lambda
 
 parser = argparse.ArgumentParser(description='Inference 2D super-resolution ResNet')
+parser.add_argument('--batch_size', default=16, type=int, help='batch size that is used for training the network')
+parser.add_argument('--upscale_factor', default=4, type=int, help='upscaling factor')
 parser.add_argument('--mode', default='PS', type=str, help='upscaling method, choose between PS or NN')
 parser.add_argument('--loss', default='mse', type=str, help='loss function, choose between mse or perceptual')
 parser.add_argument('--LR_input_size', default=88, type=int, help='width or height of input dim')
 parser.add_argument('--test_data_dir', default='/media/saewon/Data/Saewon_thesis/Dataset/validation', type=str,
                     help='directory where LR and HR volumes are saved for training')
-parser.add_argument('--load_weight_dir', default=None,
+parser.add_argument('--load_weight_dir', default= './checkpoints/tempcheckpoints/perceptual_SR-11-0.04.hdf5',
                     type=str,
                     help='which weight to load?')
 parser.add_argument('--HR_folder', default='bssfp', type=str, help='folder where HR volumes are saved')
 parser.add_argument('--LR_folder', default='bssfp_lowres', type=str, help='folder where LR volumes are saved')
-parser.add_argument('--save_result_dir', default='/media/saewon/Data/Saewon_thesis/RESULTS', type=str,
+parser.add_argument('--save_result_dir', default='/media/saewon/Data/Saewon_thesis/RESULTS/SRResNet/results', type=str,
                     help='directory where SR images will be saved')
 
 if __name__ == '__main__':
     arg = parser.parse_args()
 
+    batch_size = arg.batch_size
+    upscale_factor = arg.upscale_factor
     mode = arg.mode
     loss = arg.loss
     dim = arg.LR_input_size
-    test_data_dir = arg.testdata_dir
+    test_data_dir = arg.test_data_dir
     load_weight_dir = arg.load_weight_dir
     HR_folder = arg.HR_folder
     LR_folder = arg.LR_folder
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     lr_image_size = (dim, dim, 3)
 
     # load model
-    input, output = generator(input_size=lr_image_size)
+    input, output = generator(batch_size=batch_size, input_size=lr_image_size, upscale=upscale_factor, mode=mode)
     generator = Model(input, output)
     generator.summary()
 
@@ -60,7 +60,8 @@ if __name__ == '__main__':
 
     # Inference
     testGene = testGenerator(sample_size=1000, test_path=test_data_dir, imagelow_folder=LR_folder)
-    results = generator.predict_generator(testGene, steps=test_data_size, verbose=1)
+    enumerator = yield_generator(test_generator=testGene)
+    results = generator.predict_generator(enumerator, steps=test_data_size, verbose=1)
 
     # Save generated SR images
-    save_result(save_result_dir, results, testGene)
+    save_result(save_result_dir, results, test_generator=testGene)
