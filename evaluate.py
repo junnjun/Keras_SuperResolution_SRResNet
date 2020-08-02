@@ -13,14 +13,14 @@ parser = argparse.ArgumentParser(description='Inference 2D super-resolution ResN
 parser.add_argument('--mode', default='PS', type=str, help='upscaling method, choose between PS or NN')
 parser.add_argument('--loss', default='mse', type=str, help='loss function, choose between mse or perceptual')
 parser.add_argument('--LR_input_size', default=88, type=int, help='width or height of input dim')
-parser.add_argument('--test_data_dir', default='/media/saewon/Data/3D_data_flow_healthy', type=str,
+parser.add_argument('--test_data_dir', default='/media/saewon/Data/Saewon_thesis/Dataset/validation', type=str,
                     help='directory where LR and HR volumes are saved for training')
 parser.add_argument('--load_weight_dir', default=None,
                     type=str,
-                    help='directory to load weights, if you are training the network from scratch, set to None')
+                    help='which weight to load?')
 parser.add_argument('--HR_folder', default='bssfp', type=str, help='folder where HR volumes are saved')
 parser.add_argument('--LR_folder', default='bssfp_lowres', type=str, help='folder where LR volumes are saved')
-parser.add_argument('--save_result_dir', default='/media/saewon/Data/3D_data_flow_healthy', type=str,
+parser.add_argument('--save_result_dir', default='/media/saewon/Data/Saewon_thesis/RESULTS', type=str,
                     help='directory where SR images will be saved')
 
 if __name__ == '__main__':

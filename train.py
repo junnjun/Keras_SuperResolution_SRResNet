@@ -11,22 +11,22 @@ from keras.layers import Lambda
 parser = argparse.ArgumentParser(description='Train 2D super-resolution ResNet')
 parser.add_argument('--init_epoch', default=0, type=int, help="initial epoch")
 parser.add_argument('--num_epochs', default=20, type=int, help='number of epochs')
-parser.add_argument('--batch_size', default=2, type=int, help='batch size')
+parser.add_argument('--batch_size', default=16, type=int, help='batch size')
 parser.add_argument('--mode', default='PS', type=str, help='upscaling method, choose between PS or NN')
 parser.add_argument('--loss', default='mse', type=str, help='loss function, choose between mse or perceptual')
 parser.add_argument('--upscale_factor', default=4, type=int, help='upscaling factor')
 parser.add_argument('--LR_input_size', default=88, type=int, help='width or height of input dim')
-parser.add_argument('--train_data_dir', default='/media/saewon/Data/3D_data_flow_healthy', type=str,
+parser.add_argument('--train_data_dir', default='/media/saewon/Data/Saewon_thesis/Dataset/train', type=str,
                     help='directory where LR and HR volumes are saved for training')
-parser.add_argument('--val_data_dir', default='/media/saewon/Data/3D_data_flow_healthy', type=str,
+parser.add_argument('--val_data_dir', default='/media/saewon/Data/Saewon_thesis/Dataset/validation', type=str,
                     help='directory where LR and HR volumes are saved for validation')
 parser.add_argument('--load_weight_dir', default=None,
                     type=str,
-                    help='directory to load weights, if you are training the network from scratch, set to None')
+                    help='directory for loading the weights from, if you are training the network from scratch, set to None')
 parser.add_argument('--save_weight_dir',
-                    default='/home/saewon/Documents/3D_super_resolution/checkpoints/tempcheckpoints',
-                    type=str, help='directory where training weights are saved')
-parser.add_argument('--log_dir', default='',
+                    default='./checkpoints/tempcheckpoints',
+                    type=str, help='directory where training weights will be saved')
+parser.add_argument('--log_dir', default='/home/saewon/Documents/tensorboard_outputs/SRResNet/super_res',
                     type=str, help='log directory for tensorboard')
 parser.add_argument('--HR_folder', default='bssfp', type=str, help='folder where HR volumes are saved')
 parser.add_argument('--LR_folder', default='bssfp_lowres', type=str, help='folder where LR volumes are saved')
