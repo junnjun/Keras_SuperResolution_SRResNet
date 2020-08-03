@@ -60,8 +60,8 @@ def generator(batch_size, input_size=(88,88,3), upscale=4, mode='PS'):
         x = up_block1(x, batch_size=batch_size, upscale=int(upscale*0.5))
         x = up_block2(x, batch_size=batch_size, upscale=int(upscale*0.5))
     elif mode == 'NN':
-        x = up_block(x, upscale=upscale*0.5)
-        x = up_block(x, upscale=upscale*0.5)
+        x = up_block(x, upscale=int(upscale*0.5))
+        x = up_block(x, upscale=int(upscale*0.5))
     else:
         print(" please select mode PS or NN ")
     output = Conv2D(filters=3, kernel_size=(9, 9), strides=(1, 1), padding='same')(x)
