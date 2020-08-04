@@ -40,11 +40,32 @@ if __name__ == '__main__':
 
     test_data_size = len(os.listdir(os.path.join(test_data_dir, HR_folder)))
     lr_image_size = (dim, dim, 3)
+    hr_image_size = (dim * upscale_factor, dim * upscale_factor, 3)
 
     # load model
     input, output = generator(batch_size=batch_size, input_size=lr_image_size, upscale=upscale_factor, mode=mode)
     generator = Model(input, output)
     generator.summary()
+
+    # create VGG model
+    vgg_inp, vgg_outp = get_VGG16(input_size=hr_image_size)
+    vgg_content = Model(vgg_inp, vgg_outp)
+    vgg_content.summary()
+
+    def perceptual_loss(y_true, y_pred):
+        # mse=K.losses.mean_squared_error(y_true,y_pred)
+
+        # Lambda creates a layer from a function. This makes this preprocessing step a layer
+        # This subtracts the ImageNet group mean to all images. Also BGR -> RGB with x[:, :, ::-1]
+        rn_mean = np.array([123.68, 116.779, 103.939], dtype=np.float32)
+        preproc = lambda x: (x - rn_mean)[:, :, :, ::-1]
+        preproc_layer = Lambda(preproc)
+
+        y_t = vgg_content(preproc_layer(y_true))
+        y_p = vgg_content(preproc_layer(y_pred))
+
+        loss = tf.keras.losses.mean_squared_error(y_t, y_p)
+        return loss
 
     # compile the model
     opt = Adam(lr=0.001)
