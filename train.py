@@ -104,7 +104,7 @@ if __name__ == '__main__':
     if loss == 'mse':
         generator.compile(optimizer=opt, loss='mse', metrics=[psnr, ssim])
     elif loss == 'perceptual':
-        generator.compile(optimizer=opt, loss='perceptual_loss', metrics=[psnr, ssim])
+        generator.compile(optimizer=opt, loss=perceptual_loss, metrics=[psnr, ssim])
     else:
         print("please select loss function between mse or perceptual")
 
