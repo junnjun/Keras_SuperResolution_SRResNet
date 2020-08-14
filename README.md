@@ -12,8 +12,12 @@ A PyTorch implementation can be found [here](https://github.com/junnjun/PyTorch_
 ![SRResNet](./images/SRResNet.png)
 Super-resolution ResNet (SRResNet) is a generator network of super-resolution generative adversarial network (SRGAN). SRResNet is composed of 16 residual blocks with local skip connections and one global skip connection, and 2 upscaling blocks with MSE as loss function. The network adopts pixel shuffler as its upscaling method, where convolution is performed before upscaling in each block.
 
-![Pixelshuffler](./images/pixelshuffler.png)
-[Pixel-shuffler](https://arxiv.org/abs/1609.05158) upscales the input from the previous layer by rearranging the pixel from its feature map. With the input size of H(height) x W(width) x C(channel size), it first increases the number of its channels by r^2 where r denotes the upscaling factor. Then it performsperiodic shuffling which maps the input space from depth <img> tag: <img src="https://cdn.mathpix.com/snip/images/tq_x-XP05elVow9VIOdlsAhV-LRDpQo6KAo9GZDjgVA.original.fullsize.png" /> to space <img> tag: <img src="https://cdn.mathpix.com/snip/images/SE49efYAu5BQ3ZNiZUZ4jcLP6i26im-qT1dWEz2xGZk.original.fullsize.png" />.
+[Pixel-shuffler](https://arxiv.org/abs/1609.05158) upscales the input from the previous layer by rearranging the pixel from its feature map. With the input size of H(height) x W(width) x C(channel size), it first increases the number of its channels by r^2 where r denotes the upscaling factor. Then it performs
+periodic shuffling which maps the input space from depth <img> <img src="https://cdn.mathpix.com/snip/images/tq_x-XP05elVow9VIOdlsAhV-LRDpQo6KAo9GZDjgVA.original.fullsize.png" /> to space <img> <img src="https://cdn.mathpix.com/snip/images/C5fKRWWU8tWedzbSAwD0dhWLU_NcXo2_VzO0XxYFHmI.original.fullsize.png" />
+
+<p align="center">
+  <img width="891" height="396" src="./images/pixelshuffler.png">
+</p>
 
 Hence, in this project following experiments were of interest :  first,  loss function <code> <b>perceptual loss VS MSE loss</b> </code> and second, upscaling method (upscaling factor x4) <code> <b> pixel-shuffler VS nearest-neighbor interpolation</b> </code>. Also, a different order of sequence of layers in the upscaling block is tested (Model 1 vs Model 5). The proposed combination of the network architecture of SRResNet from the paper is listed under Model 1.
 
