@@ -16,7 +16,7 @@ Super-resolution ResNet (SRResNet) is a generator network of super-resolution ge
 periodic shuffling which maps the input space from depth <img> <img src="https://cdn.mathpix.com/snip/images/tq_x-XP05elVow9VIOdlsAhV-LRDpQo6KAo9GZDjgVA.original.fullsize.png" /> to space <img> <img src="https://cdn.mathpix.com/snip/images/C5fKRWWU8tWedzbSAwD0dhWLU_NcXo2_VzO0XxYFHmI.original.fullsize.png" />
 
 <p align="center">
-  <img width="891" height="396" src="./images/pixelshuffler.png">
+  <img width="500" height="270" src="./images/pixelshuffler.png">
 </p>
 
 Hence, in this project following experiments were of interest :  first,  loss function <code> <b>perceptual loss VS MSE loss</b> </code> and second, upscaling method (upscaling factor x4) <code> <b> pixel-shuffler VS nearest-neighbor interpolation</b> </code>. Also, a different order of sequence of layers in the upscaling block is tested (Model 1 vs Model 5). The proposed combination of the network architecture of SRResNet from the paper is listed under Model 1.
