@@ -26,7 +26,7 @@ Hence, in this project following experiments were of interest :  first,  loss fu
 | Model 1 |     MSE loss    |  Pixel-shuffler  | Convolution then Resize |
 | Model 2 | Perceptual loss |  Pixel-shuffler  | Convolution then Resize |
 | Model 3 |     MSE loss    | NN interpolation | Convolution then Resize |
-| Model 4 | perceptual loss | NN interpolation | Convolution then Resize |
+| Model 4 | Perceptual loss | NN interpolation | Convolution then Resize |
 | Model 5 |    Mse loss     |  Pixel-shuffler  | Resize then Convolution |
 
 ## Training detail
@@ -72,11 +72,107 @@ optional arguments:
 --mode                     upscaling method, two options: 'NN' for NN interpolation, 'PS' for pixel-shuffler
 --loss                     loss function, two options: 'perceptual' for perceptual loss, 'mse' for MSE loss
 --LR_input_size            if the size of the input low-resolution image is 88x88 then type in 88 (default:88)
---test_data_dir           path to test dataset, must contain LR_folder and HR_folder
+--test_data_dir            path to test dataset, must contain LR_folder and HR_folder
 --HR_folder                where low-resolution data are saved, specify the folder name
 --LR_folder                where high-resolution data are saved, specify the folder name
 --load_weight_dir          path to saved weight/checkpoint
 --save_result_dir          where generated SR images will be saved
 ```
+
+
+## Results
+
+|         |  Loss |  PSNR |  SSIM  | Training time per epoch |
+|:-------:|:-----:|:-----:|:------:|:-----------------------:|
+| Model 1 |  0.02 | 17.15 | 0.7865 |           54m           |
+| Model 2 | 15.37 | 10.66 | 0.6526 |          1h 9m          |
+| Model 3 |  0.04 | 14.04 | 0.6526 |          2h 11m         |
+| Model 4 | 16.93 | 10.79 | 0.5495 |          2h 26m         |
+| Model 5 |  0.02 | 16.62 | 0.7518 |          2h 14m         |
+
+
+- Model 1 (MSE loss & Pixel-shuffler & Convolution then Resize)
+<table>
+  <tr>
+    <td>ground-truth HR</td>
+     <td>bicubic interpolation</td>
+     <td>generated SR</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/original.png"></td>
+    <td valign="top"><img src="./images/bicubic.png"></td>
+    <td valign="top"><img src="./images/SRResNet_model1.png"></td>
+  </tr>
+ </table>
+
+- Model 2 (Perceptual loss &  Pixel-shuffler & Convolution then Resize)
+<table>
+  <tr>
+    <td>ground-truth HR</td>
+     <td>bicubic interpolation</td>
+     <td>generated SR</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/original.png"></td>
+    <td valign="top"><img src="./images/bicubic.png"></td>
+    <td valign="top"><img src="./images/SRResNet_model2.png"></td>
+  </tr>
+ </table>
+
+- Model 3 (MSE loss & NN interpolation & Convolution then Resize)
+<table>
+  <tr>
+    <td>ground-truth HR</td>
+     <td>bicubic interpolation</td>
+     <td>generated SR</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/original.png"></td>
+    <td valign="top"><img src="./images/bicubic.png"></td>
+    <td valign="top"><img src="./images/SRResNet_model3.png"></td>
+  </tr>
+ </table>
+
+- Model 4 (Perceptual loss & NN interpolation & Convolution then Resize)
+<table>
+  <tr>
+    <td>ground-truth HR</td>
+     <td>bicubic interpolation</td>
+     <td>generated SR</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/original.png"></td>
+    <td valign="top"><img src="./images/bicubic.png"></td>
+    <td valign="top"><img src="./images/SRResNet_model6.png"></td>
+  </tr>
+ </table>
+
+- Model 5 (Mse loss & Pixel-shuffler & Resize then Convolution)
+<table>
+  <tr>
+    <td>ground-truth HR</td>
+     <td>bicubic interpolation</td>
+     <td>generated SR</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/original.png"></td>
+    <td valign="top"><img src="./images/bicubic.png"></td>
+    <td valign="top"><img src="./images/SRResNet_model4.png"></td>
+  </tr>
+ </table>
+ 
+ 
+ ## Discussion
+ 
+- MSE loss results in higher PSNR and SSIM ratio compared to the perceptual loss, which is an expected result.  But still, it does not guarantee perceptually satisfying quality. 
+- However, the networks that were trained with perceptual loss (model 2 and model 4) contain strong checkerboard artifacts, which did not appear in the models trained with MSE loss (model 1 and model 3). But it is hard to tell whether perceptual loss is mainly causing the checkerboard artifacts.
+- Neither nearest neighbor interpolation nor pixel-shuffler is the perfect solution to avoid checkerboard artifacts. This could be the reason why the paper defines SRResNet with MSE loss & pixel-shuffler while SRGAN has perceptual loss & pixel-shuffler combination.
+- Having different order of sequence of layers in the upscaling block doesn't show a significant difference in the quality of the generated HR image, but rather affect the uncertainties of the network or the time spent on training.
+- Uncertainty estimation for each neural network model can give us further understanding of the model such as the robustness of the model. Generated uncertainty maps and warning maps can be found [here](https://github.com/junnjun/Uncertainty-Estimation-for-Deep-Learning-based-SISR)
+
+ 
+ 
+
+
 
 
