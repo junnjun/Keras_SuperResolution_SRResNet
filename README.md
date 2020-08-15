@@ -33,3 +33,50 @@ Hence, in this project following experiments were of interest :  first,  loss fu
 Training was performed on a workstation with a 3.6GHz, 6-core processor with 64GB RAM, NVIDIA Quadro P6000 GPU.
 
 ## Usage
+Activate virtual environment (see requirements.txt) and simply run the code by e.g. <code>python train.py</code>
+### Train
+```shellscript
+usage: train.py [-h] [--init_epoch INIT_EPOCH] [--num_epoch NUM_EPOCH] [--batch_size BATCH_SIZE]
+                [--mode MODE] [--loss LOSS] [--upscale_factor UPSCALE_FACTOR] [--LR_input_size LR_INPUT_SIZE]
+                [--train_data_dir TRAIN_DATA_DIR] [--val_data_dir VAL_DATA_DIR] [--HR_folder HR_FOLDER] [--LR_folder LR_FOLDER]
+                [--load_weight_dir SAVE_WEIGHT_DIR] [--save_weight_dir SAVE_WEIGHT_DIR] [--log_dir LOG_DIR]
+
+optional arguments:
+-h, --help                 for more help on parameters 
+--init_epoch               initial epoch (default:0), if you want to continue training from previous training, set initial_epoch to begin training with
+--num_epoch                number of epochs (default:20)
+--batch_size               training batch size (default:16)
+--mode                     upscaling method, two options: 'NN' for NN interpolation, 'PS' for pixel-shuffler
+--loss                     loss function, two options: 'perceptual' for perceptual loss, 'mse' for MSE loss
+--upscale_factor           upscale factor (default:x4)
+--LR_input_size            if the size of the input low-resolution image is 88x88 then type in 88 (default:88)
+--train_data_dir           path to training dataset, must contain LR_folder and HR_folder
+--val_data_dir             path to the validation dataset, must contain LR_folder and HR_folder
+--HR_folder                where low-resolution data are saved, specify the folder name
+--LR_folder                where high-resolution data are saved, specify the folder name
+--load_weight_dir          path to load saved weight to continue training, otherwise set to None (default:None)
+--save_weight_dir          path to save training weights
+--log_dir                  log directory for tensorboard
+```
+
+### Inference
+```shellscript
+usage: evaluate.py [-h] [--upscale_factor UPSCALE_FACTOR] [--mode MODE] [--loss LOSS] [--LR_input_size LR_INPUT_SIZE]
+                   [--test_data_dir TEST_DATA_DIR] [--HR_folder HR_FOLDER] [--LR_folder LR_FOLDER]
+                   [--load_weight_dir SAVE_WEIGHT_DIR] [--save_result_dir SAVE_RESULT_DIR] 
+  
+optional arguments:
+-h, --help                 for more help on parameters
+--batch_size               batch size used for training the network
+--upscale_factor           upscale factor (default:x4)
+--mode                     upscaling method, two options: 'NN' for NN interpolation, 'PS' for pixel-shuffler
+--loss                     loss function, two options: 'perceptual' for perceptual loss, 'mse' for MSE loss
+--LR_input_size            if the size of the input low-resolution image is 88x88 then type in 88 (default:88)
+--test_data_dir           path to test dataset, must contain LR_folder and HR_folder
+--HR_folder                where low-resolution data are saved, specify the folder name
+--LR_folder                where high-resolution data are saved, specify the folder name
+--load_weight_dir          path to saved weight/checkpoint
+--save_result_dir          where generated SR images will be saved
+```
+
+
