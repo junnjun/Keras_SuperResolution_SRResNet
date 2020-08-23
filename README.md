@@ -2,6 +2,8 @@
 
 A Keras implementation of super-resolution ResNet from ["Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network"](https://arxiv.org/abs/1609.04802), as a part of a master thesis project "Super-resolving cardiac MR images using deep learning" at Linköping University.
 
+Super-resolution on 3D cardiac MR volumes (using PyTorch) can be found [here](https://github.com/junnjun/3D-Super-resolution) (private at the moment)
+
 ## Dataset
 
 2D balanced-ssfp slices were used for training/inference. 2D slices were obtained from cine balanced-ssfp volume with spatial resolution of 1 x 1 x 8 mm^3. Obtained 2D slices are used as a hight-resolution target for training the network. Low-resolution input was created by downsampling with bicubic interpolation and adding Gaussian blurring with sigma = 1.0. 
@@ -17,7 +19,7 @@ periodic shuffling which maps the input space from depth <img> <img src="https:/
   <img width="530" height="270" src="./images/pixelshuffler.png">
 </p>
 
-Hence, in this project following experiments were of interest :  first,  loss function <code> <b>perceptual loss VS MSE loss</b> </code> and second, upscaling method (upscaling factor x4) <code> <b> pixel-shuffler VS nearest-neighbor interpolation</b> </code>. Also, a different order of sequence of layers in the upscaling block is tested (Model 1 vs Model 5). The proposed combination of the network architecture of SRResNet from the paper is listed under Model 1.
+In this project following experiments were of interest :  first,  loss function <code> <b>perceptual loss VS MSE loss</b> </code> and second, upscaling method (upscaling factor x4) <code> <b> pixel-shuffler VS nearest-neighbor interpolation</b> </code>. Also, a different order of sequence of layers in the upscaling block was tested (Model 1 vs Model 5). The proposed combination of the network architecture of SRResNet from the paper is listed under Model 1.
 
 |         |  Loss function  | Upscaling method |    Sequence of Layer    |
 |:-------:|:---------------:|:----------------:|:-----------------------:|
@@ -37,7 +39,7 @@ Activate virtual environment (see requirements.txt) and simply run the code by e
 usage: train.py [-h] [--init_epoch INIT_EPOCH] [--num_epoch NUM_EPOCH] [--batch_size BATCH_SIZE]
                 [--mode MODE] [--loss LOSS] [--upscale_factor UPSCALE_FACTOR] [--LR_input_size LR_INPUT_SIZE]
                 [--train_data_dir TRAIN_DATA_DIR] [--val_data_dir VAL_DATA_DIR] [--HR_folder HR_FOLDER] [--LR_folder LR_FOLDER]
-                [--load_weight_dir SAVE_WEIGHT_DIR] [--save_weight_dir SAVE_WEIGHT_DIR] [--log_dir LOG_DIR]
+                [--load_weight_dir LOAD_WEIGHT_DIR] [--save_weight_dir SAVE_WEIGHT_DIR] [--log_dir LOG_DIR]
 
 optional arguments:
 -h, --help                 for more help on parameters 
@@ -61,7 +63,7 @@ optional arguments:
 ```shellscript
 usage: evaluate.py [-h] [--upscale_factor UPSCALE_FACTOR] [--mode MODE] [--loss LOSS] [--LR_input_size LR_INPUT_SIZE]
                    [--test_data_dir TEST_DATA_DIR] [--HR_folder HR_FOLDER] [--LR_folder LR_FOLDER]
-                   [--load_weight_dir SAVE_WEIGHT_DIR] [--save_result_dir SAVE_RESULT_DIR] 
+                   [--load_weight_dir LOAD_WEIGHT_DIR] [--save_result_dir SAVE_RESULT_DIR] 
   
 optional arguments:
 -h, --help                 for more help on parameters
@@ -160,16 +162,48 @@ optional arguments:
  </table>
  
  
- ## Discussion
- 
-- MSE loss results in higher PSNR and SSIM ratio compared to the perceptual loss, which is an expected result.  But still, it does not guarantee perceptually satisfying quality. 
-- However, the networks that were trained with perceptual loss (model 2 and model 4) contain strong checkerboard artifacts, which did not appear in the models trained with MSE loss (model 1 and model 3). But it is hard to tell whether perceptual loss is mainly causing the checkerboard artifacts.
-- Neither nearest neighbor interpolation nor pixel-shuffler is the perfect solution to avoid checkerboard artifacts. This could be the reason why the paper defines SRResNet with MSE loss & pixel-shuffler while SRGAN has perceptual loss & pixel-shuffler combination.
-- Having different order of sequence of layers in the upscaling block doesn't show a significant difference in the quality of the generated HR image, but rather affect the uncertainties of the network or the time spent on training.
-- Uncertainty estimation for each neural network model can give us further understanding of the model such as the robustness of the model. Generated uncertainty maps and warning maps can be found [here](https://github.com/junnjun/Uncertainty-Estimation-for-Deep-Learning-based-SISR)
+ ## Uncertainty maps and Warning map
 
+
+|         | Intrinsic uncertainty | Parameter uncertainty | Warning map |
+|:-------:|:---------------------:|:---------------------:|:-----------:|
+| Model 1 |         20691         |         18434         |     0.5     |
+| Model 2 |         19273         |         19023         |     0.46    |
+| Model 3 |         39722         |         25523         |     0.99    |
+| Model 4 |         19386         |         17737         |     0.95    |
+| Model 5 |         18752         |         17452         |     0.27    |
+
+More details of uncertainty maps and warning map can be found [here](https://github.com/junnjun/Uncertainty-Estimation-for-Deep-Learning-based-SISR)
+<table>
+  <tr>
+    <td>Model 1</td>
+     <td>Model 2</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/uncer_SRResNet_model1.png"></td>
+    <td valign="top"><img src="./images/uncer_SRResNet_model2.png"></td>
+  </tr>
+    <tr>
+    <td>Model 3</td>
+     <td>Model 4</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/uncer_SRResNet_model3.png"></td>
+    <td valign="top"><img src="./images/uncer_SRResNet_model4.png"></td>
+  </tr>
+    <tr>
+    <td>Model 5</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="./images/uncer_SRResNet_model5.png"></td>
+  </tr>
+ </table>
  
- 
+Warning map is a binary map (0/1) with threshold  = 0.19. Black indicates ‘safe’ pixels , and red indicates ‘risky’ pixels. 
+
+
+
+
 
 
 
