@@ -2,8 +2,6 @@
 
 A Keras implementation of super-resolution ResNet from ["Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network"](https://arxiv.org/abs/1609.04802), as a part of a master thesis project "Super-resolving cardiac MR images using deep learning" at Linköping University.
 
-A PyTorch implementation can be found [here](https://github.com/junnjun/PyTorch_SuperResolution_SRResNet) 
-
 ## Dataset
 
 2D balanced-ssfp slices were used for training/inference. 2D slices were obtained from cine balanced-ssfp volume with spatial resolution of 1 x 1 x 8 mm^3. Obtained 2D slices are used as a hight-resolution target for training the network. Low-resolution input was created by downsampling with bicubic interpolation and adding Gaussian blurring with sigma = 1.0. 
