@@ -1,6 +1,6 @@
 # 2D super-resolution on cardiac MR images
 
-A Keras implementation of super-resolution ResNet from ["Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network"](https://arxiv.org/abs/1609.04802), as a part of a master thesis project "Super-resolving cardiac MR images using deep learning" at Linköping University.
+A Keras implementation of super-resolution ResNet from ["Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network"](https://arxiv.org/abs/1609.04802), as a part of the master thesis project "Super-resolving cardiac MR images using deep learning" at Linköping University.
 
 Super-resolution on 3D cardiac MR volumes (using PyTorch) can be found [here](https://github.com/junnjun/3D-Super-resolution) (private at the moment)
 
@@ -19,7 +19,7 @@ periodic shuffling which maps the input space from depth <img> <img src="https:/
   <img width="530" height="270" src="./images/pixelshuffler.png">
 </p>
 
-In this project following experiments were of interest :  first,  loss function <code> <b>perceptual loss VS MSE loss</b> </code> and second, upscaling method (upscaling factor x4) <code> <b> pixel-shuffler VS nearest-neighbor interpolation</b> </code>. Also, a different order of sequence of layers in the upscaling block was tested (Model 1 vs Model 5). The proposed combination of the network architecture of SRResNet from the paper is listed under Model 1.
+In this project following experiments were of interest :  first,  loss function <code> <b>perceptual loss VS MSE loss</b> </code> and second, upscaling method (upscaling factor x4) <code> <b> pixel-shuffler VS nearest-neighbor interpolation</b> </code>. Also, different order of sequence of layers in the upscaling block was tested (Model 1 vs Model 5). The proposed combination of the network architecture of SRResNet from the paper is listed under Model 1.
 
 |         |  Loss function  | Upscaling method |    Sequence of Layer    |
 |:-------:|:---------------:|:----------------:|:-----------------------:|
@@ -35,6 +35,7 @@ Training was performed on a workstation with a 3.6GHz, 6-core processor with 64G
 ## Usage
 Activate virtual environment (see requirements.txt) and simply run the code by e.g. <code>python train.py</code>
 ### Train
+(Note:change the input shape of the pixel shuffler["(here)"](https://github.com/junnjun/Keras_SuperResolution_SRResNet/blob/c3647166655ec5dc716df86d627bd72e24ea5bd8/network.py#L26) accordingly.)
 ```shellscript
 usage: train.py [-h] [--init_epoch INIT_EPOCH] [--num_epoch NUM_EPOCH] [--batch_size BATCH_SIZE]
                 [--mode MODE] [--loss LOSS] [--upscale_factor UPSCALE_FACTOR] [--LR_input_size LR_INPUT_SIZE]
