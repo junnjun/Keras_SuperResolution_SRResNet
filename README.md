@@ -33,9 +33,8 @@ In this project following experiments were of interest :  first,  loss function 
 Training was performed on a workstation with a 3.6GHz, 6-core processor with 64GB RAM, NVIDIA Quadro P6000 GPU.
 
 ## Usage
-Activate virtual environment (see requirements.txt) and simply run the code by e.g. <code>python train.py</code>
 ### Train
-(Note:change the input shape of the pixel shuffler["(here)"](https://github.com/junnjun/Keras_SuperResolution_SRResNet/blob/c3647166655ec5dc716df86d627bd72e24ea5bd8/network.py#L26) accordingly.)
+(Note:change the input shape of the pixel shuffler[(here)](https://github.com/junnjun/Keras_SuperResolution_SRResNet/blob/c3647166655ec5dc716df86d627bd72e24ea5bd8/network.py#L26) accordingly. <code> pixelshuffler(input_shape=(88,88,3), ...) </code>) 
 ```shellscript
 usage: train.py [-h] [--init_epoch INIT_EPOCH] [--num_epoch NUM_EPOCH] [--batch_size BATCH_SIZE]
                 [--mode MODE] [--loss LOSS] [--upscale_factor UPSCALE_FACTOR] [--LR_input_size LR_INPUT_SIZE]
