@@ -106,7 +106,7 @@ if __name__ == '__main__':
     elif loss == 'perceptual':
         generator.compile(optimizer=opt, loss=perceptual_loss, metrics=[psnr, ssim])
     else:
-        print("please select loss function between mse or perceptual")
+        raise Exception("please select loss function between mse or perceptual")
 
     # load weight and continue from previous training?
     if load_weight_dir is not None:
